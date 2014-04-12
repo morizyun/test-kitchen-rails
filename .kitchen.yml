@@ -1,12 +1,21 @@
 ---
-driver:
-  name: vagrant
-
 provisioner:
   name: chef_solo
 
+driver_config:
+  require_chef_omnibus: true
+
 platforms:
-  - name: ubuntu-12.04
+  - name: do-ubuntu-12.04
+    driver:
+      name: digitalocean
+      ssh_key: ~/.ssh/id_rsa
+    driver_config:
+      image_id: 3101045
+      region: San Francisco 1
+      flavor: 512MB
+      private_networking: false
+  - name: va-ubuntu-12.04
     driver:
       name: vagrant
       network:
@@ -20,9 +29,24 @@ platforms:
       customize:
         memory: 1024
         cpuexecutioncap: 100
+  - name: ec2-ubuntu-12.04
+    driver:
+      name: ec2
+      region:  ap-northeast-1
+      availability_zone: ap-northeast-1c
+      flavor_id: t1.micro
+      image_id: ami-c83c8fc9
+      aws_ssh_key_id: <%= ENV['AWS_SSH_KEY_ID'] %>
+      aws_access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
+      ssh_key: <%= ENV['AWS_SSH_KEY'] %>
+      aws_secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+      username: ubuntu
+      security_group_ids: ["<%= ENV['AWS_SECURITY_GROUP_ID'] %>"]
+      port: 22
+      ebs_optimized: false
 
 suites:
-  - name: default
+  - name: rails
     run_list:
       - recipe[apt]
       - recipe[build-essential]
@@ -34,6 +58,7 @@ suites:
       - recipe[ruby_build]
       - recipe[rbenv::system]
       - recipe[base]
+      - recipe[base::rails]
     attributes:
       nginx:
         application_name: 'sample'

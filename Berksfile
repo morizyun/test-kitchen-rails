@@ -16,7 +16,5 @@ cookbook "mysql",
   git: "https://github.com/myplanetdigital-experimental/chef-mysql.git"
 cookbook 'rbenv',
   git: "https://github.com/fnichol/chef-rbenv.git"
-cookbook 'database',
-  git: "https://github.com/opscode-cookbooks/database.git"
 
 cookbook 'base', path: 'site-cookbooks/base'

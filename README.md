@@ -16,7 +16,7 @@ _Description: test-kitchen(Vagrant) with Ubuntu 12.04/MySQL/Nginx/Ruby 2.1.0/sev
 
 6. `bundle install`
 
-7. `bundle exec berks install`
+7. `bundle exec berks install --path cookbooks`
 
 8. `kitchen setup default-ubuntu-1204`
 

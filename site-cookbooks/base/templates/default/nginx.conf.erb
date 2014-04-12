@@ -1,4 +1,4 @@
-user vagrant;
+user root;
 worker_processes 1;
 
 pid /var/run/nginx.pid;
@@ -22,4 +22,8 @@ http {
 
   # virtual Hosts
   include /etc/nginx/sites-enabled/*;
+
+  # Server Setting
+  server_names_hash_bucket_size 64;
+  types_hash_max_size 4096;
 }
