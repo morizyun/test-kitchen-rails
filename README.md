@@ -2,7 +2,7 @@
 
 _Description: test-kitchen(Vagrant) with Ubuntu 12.04/MySQL/Nginx/Ruby 2.1.0/severspec
 
-## Project Setup
+## Setup Ubuntu
 
 1. Download and install Vagrant http://www.vagrantup.com/
 
@@ -14,9 +14,9 @@ _Description: test-kitchen(Vagrant) with Ubuntu 12.04/MySQL/Nginx/Ruby 2.1.0/sev
 
 5. `cd test-kitchen-rails`
 
-6. `bundle install`
+6. `bundle install --binstubs=bin`
 
-7. `bundle exec berks install --path cookbooks`
+7. `bundle exec berks vendor cookbooks`
 
 8. `kitchen setup default-ubuntu-1204`
 
@@ -30,3 +30,6 @@ _Description: test-kitchen(Vagrant) with Ubuntu 12.04/MySQL/Nginx/Ruby 2.1.0/sev
 
 2. MySQL ROOT PASS : nothing
 
+## More Detail
+
+Please see http://morizyun.github.io/blog/test-kitchen-vagrant-rails-rbenv-chef-serverspec/

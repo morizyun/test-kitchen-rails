@@ -6,15 +6,16 @@ driver_config:
   require_chef_omnibus: true
 
 platforms:
-  - name: do-ubuntu-12.04
+  - name: va-centos-6.5
     driver:
-      name: digitalocean
-      ssh_key: ~/.ssh/id_rsa
+      name: vagrant
+      network:
+        - ["private_network", {ip: "192.168.33.32"}]
+      synced_folders:
+        - ["vagrant", "/usr/share/nginx", "create: true, type: :nfs"]
     driver_config:
-      image_id: 3101045
-      region: San Francisco 1
-      flavor: 512MB
-      private_networking: false
+      box: opscode-centos-6.5
+      box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.5_chef-provisionerless.box
   - name: va-ubuntu-12.04
     driver:
       name: vagrant
@@ -29,26 +30,35 @@ platforms:
       customize:
         memory: 1024
         cpuexecutioncap: 100
-  - name: ec2-ubuntu-12.04
-    driver:
-      name: ec2
-      region:  ap-northeast-1
-      availability_zone: ap-northeast-1c
-      flavor_id: t1.micro
-      image_id: ami-c83c8fc9
-      aws_ssh_key_id: <%= ENV['AWS_SSH_KEY_ID'] %>
-      aws_access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
-      ssh_key: <%= ENV['AWS_SSH_KEY'] %>
-      aws_secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
-      username: ubuntu
-      security_group_ids: ["<%= ENV['AWS_SECURITY_GROUP_ID'] %>"]
-      port: 22
-      ebs_optimized: false
+#  - name: ec2-ubuntu-12.04
+#    driver:
+#      name: ec2
+#      region:  ap-northeast-1
+#      availability_zone: ap-northeast-1c
+#      flavor_id: t1.micro
+#      image_id: ami-f397eef2
+#      aws_ssh_key_id: <%= ENV['AWS_SSH_KEY_ID'] %>
+#      aws_access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
+#      ssh_key: <%= ENV['AWS_SSH_KEY'] %>
+#      aws_secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+#      username: ubuntu
+#      security_group_ids: ["<%= ENV['AWS_SECURITY_GROUP_ID'] %>"]
+#      port: 22
+#      ebs_optimized: false
+#  - name: do-ubuntu-12.04
+#    driver:
+#      name: digitalocean
+#      ssh_key: ~/.ssh/id_rsa
+#    driver_config:
+#      image_id: 3101045
+#      region: San Francisco 1
+#      flavor: 512MB
+#      private_networking: false
 
 suites:
   - name: rails
     run_list:
-      - recipe[apt]
+      - recipe[base::prepare]
       - recipe[build-essential]
       - recipe[git]
       - recipe[vim]
@@ -60,6 +70,8 @@ suites:
       - recipe[base]
       - recipe[base::rails]
     attributes:
+      git:
+        version: 1.9.1
       nginx:
         application_name: 'sample'
       mysql:
@@ -77,3 +89,4 @@ suites:
               options: '--no-ri --no-rdoc'
             - name: 'therubyracer'
               options: '--no-ri --no-rdoc'
+

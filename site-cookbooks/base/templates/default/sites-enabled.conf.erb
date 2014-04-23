@@ -6,10 +6,16 @@ server {
   listen 80;
   server_name localhost;
 
-  root /usr/share/nginx/www/<%= node['nginx']['application_name'] %>;
+  root /usr/share/nginx/rails/<%= node['nginx']['application_name'] %>;
   access_log /var/log/nginx/rails_log;
   error_log /var/log/nginx/rails_error_log;
   rewrite_log on;
+
+  location ~ ^/assets/ {
+    root /usr/share/nginx/rails/<%= node['nginx']['application_name'] %>/public;
+    expires max;
+    break;
+  }
 
   location / {
     proxy_pass  http://backend;
@@ -28,11 +34,5 @@ server {
     proxy_buffers              4 32k;
     proxy_busy_buffers_size    64k;
     proxy_temp_file_write_size 64k;
-  }
-
-  location ~ ^/(images|javascripts|stylesheets|system)/  {
-    root /usr/share/nginx/www/<%= node['nginx']['application_name'] %>/public;
-    expires max;
-    break;
   }
 }

@@ -4,8 +4,15 @@ service 'iptables' do
 end
 
 # curlの導入
-%w{curl python-software-properties}.each do |p|
+%w{curl}.each do |p|
   package p do
+    action :install
+  end
+end
+
+# install python-software-properties
+if node['platform'] =~ /ubuntu/
+  package 'python-software-properties libcurl3-dev' do
     action :install
   end
 end
@@ -34,3 +41,10 @@ template '/etc/nginx/sites-enabled/default.conf' do
   notifies :reload, 'service[nginx]'
 end
 
+bash 'delete file site-enabled/default' do
+  user 'root'
+  cwd '/etc/nginx/sites-enabled/'
+  code <<-EOC
+    rm -rf default
+  EOC
+end
