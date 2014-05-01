@@ -18,9 +18,9 @@ _Description: test-kitchen(Vagrant) with Ubuntu 12.04/MySQL/Nginx/Ruby 2.1.0/sev
 
 7. `bundle exec berks vendor cookbooks`
 
-8. `kitchen setup default-ubuntu-1204`
+8. `kitchen setup rails-va-ubuntu-1204`
 
-9. `kitchen verify default-ubuntu-1204`
+9. `kitchen verify rails-va-ubuntu-1204`
 
 10. Browsing `http://192.168.33.33`
 
