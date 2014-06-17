@@ -12,7 +12,7 @@ end
 
 # install python-software-properties
 if node['platform'] =~ /ubuntu/
-  package 'python-software-properties libcurl3-dev libcurl3 libcurl3-gnutls libcurl4-openssl-dev' do
+  package 'python-software-properties libcurl4-openssl-dev' do
     action :install
   end
 end
